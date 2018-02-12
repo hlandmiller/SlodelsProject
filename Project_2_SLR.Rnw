@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{graphicx,subfig}
+\usepackage{float}
+\usepackage{fullpage}
+
+\title{Project 2 - SLR}
+\author{Savanah Bird and Haley Land-Miller}
+\date{Due: Monday, February 12, 2018, in class}
+
+
+\begin{document}
+\maketitle
+
+<<global_options, include=FALSE>>=
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=3, fig.width=5, fig.align = "center")
+library(dplyr)
+library(ggplot2)
+library(broom)
+options(digits=3)
+@
+
+\section*{Introduction}
+
+
+\section*{Simple Linear Regression}
+
+<<message=FALSE, warning=FALSE>>=
+
+@
+
+\section*{Conclusions}
+
+\end{document}
