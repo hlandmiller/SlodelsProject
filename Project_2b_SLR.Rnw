@@ -24,7 +24,7 @@ options(digits=3)
 @
 
 \section*{Introduction}
-Hi Savanah
+Hi Savanah BIRD
 
 Our dataset describes a sample of forest fires that occured in Montesinho Park in northern $Portugal^{1}$. For each fire there are a number of recorded variables that generally describe the environmnet at the time of the fire, such as region of the park, temperature, wind, and moisture. The variables are as follows:  
 
