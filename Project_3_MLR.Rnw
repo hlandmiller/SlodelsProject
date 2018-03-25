@@ -1,0 +1,89 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{graphicx,subfig}
+\usepackage{float}
+\usepackage{fullpage}
+
+\title{Project 2 - SLR}
+\author{Savanah Bird and Haley Land-Miller}
+\date{Due: Monday, February 12, 2018, in class}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+<<global_options, include=FALSE, echo=FALSE>>=
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=3, fig.width=5, fig.align = "center")
+library(dplyr)
+library(ggplot2)
+library(broom)
+library(readxl)
+library(knitr)
+options(digits=3)
+library(ISLR)
+#install.packages("rms")
+library(leaps)
+require(ISLR); require(rms)
+require(dplyr); require(leaps)
+@
+
+\section*{Introduction}
+\section*{Model Selection}
+<<message=FALSE, warning=FALSE, echo=FALSE>>=
+Fires <- readxl::read_excel(path = "~/Desktop/School Work/Semester 8/Slodels HW/SlodelsProject/Forestfires_forR.xlsx",sheet=2)
+full.model <- lm(log(area)~Sector+month+weekend+FFMC+DMC+DC+ISI+temp+RH+wind+Raincat, data=Fires)
+Sector <-Fires$Sector
+month <-Fires$month
+weekend <-Fires$weekend
+FFMC <-Fires$FFMC
+DMC <-Fires$DMC
+DC <-Fires$DC
+ISI <-Fires$ISI
+temp <-Fires$temp
+RH <-Fires$RH
+wind <-Fires$wind
+Raincat <-Fires$Raincat
+area <- Fires$area
+pairs(cbind(log(area),FFMC,DMC,DC,ISI,temp,RH,wind), lower.panel = NULL, pch=18, cor=TRUE)
+@
+log transform area
+DMC and DC appear to be correlated
+FMC and all moisture indicies
+temp and RH correlated 
+temp and ISI, DMC
+
+<<>>=
+drop1(lm(log(area) ~ Sector + month + weekend + FFMC + DMC + DC + ISI + temp + RH + wind + Raincat + weekend*DMC, data=Fires), test="F")
+
+drop1(lm(log(area) ~ Sector + month + weekend + FFMC + DMC + DC + ISI + temp + RH + wind, data=Fires), test="F")
+
+drop1(lm(log(area) ~ Sector + month + weekend + DMC + DC + ISI + temp + RH + wind, data=Fires), test="F")
+
+drop1(lm(log(area) ~ Sector + month + weekend + DMC + DC + ISI + temp + wind, data=Fires), test="F")
+
+drop1(lm(log(area) ~ month + weekend + DMC + DC + ISI + temp + wind, data=Fires), test="F")
+
+drop1(lm(log(area) ~ month + weekend + DMC + DC + temp + wind, data=Fires), test="F")
+
+drop1(lm(log(area) ~ month + weekend + DMC + DC + temp, data=Fires), test="F")
+
+drop1(lm(log(area) ~ month + weekend + DMC + DC, data=Fires), test="F")
+@
+
+<<>>=
+fire_lm <- lm(log(area)~month + weekend + DMC + DC, data=Fires)
+@
+
+We used backwards stepwise selection to construct a model that includes four variables: month, weekend, DMC, and DC. We used 
+
+Our multiple-$R^2$ value is $0.102$, while the adjusted $R^2$ is 0.0596. This suggests that overall, our model only explains about $10\%$ of the variability in the data, so the model does not seem to be a great fit. Therefore, the model likely would not explain much of the variation in the population.
+
+It makes sense that both month and weekend terms remained in the model, because 
+<<>>=
+anova(fire_lm)
+summary(fire_lm)
+@
+
+\end{document}
